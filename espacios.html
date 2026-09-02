@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patricia Nieto — Espacios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Inconsolata:wght@300;400&display=swap" rel="stylesheet" />
+
+<style>
+/* ── Variables ───────────────────────────────────────────── */
+:root {
+  --bg:         #090909;
+  --border:     #1e1e1e;
+  --text:       #ddd8ce;
+  --muted:      #444;
+  --accent:     #b8a47a;
+  --accent-dim: #5a4e30;
+  --cols: 3;
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inconsolata', monospace;
+  font-size: 13px;
+  min-height: 100dvh;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32px;
+  height: 64px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.logo-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.logo-name:hover,
+.logo-name:visited,
+.logo-name:active {
+  color: var(--text);
+  text-decoration: none;
+}
+
+@media (max-width: 520px) {
+  .logo-name {
+    font-size: 15px;
+    letter-spacing: 0.18em;
+  }
+}
+.logo-sub {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Filters ─────────────────────────────────────────────── */
+.filters {
+  display: flex;
+  gap: 2px;
+}
+
+.filter-btn {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--muted);
+  font-family: 'Inconsolata', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.filter-btn:hover         { color: var(--text); border-color: var(--border); }
+.filter-btn.active        { color: var(--accent); border-color: var(--accent-dim); }
+
+/* ── Grid ────────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  gap: 2px;
+  padding: 2px;
+}
+
+@media (max-width: 900px) { :root { --cols: 2; } }
+@media (max-width: 520px) { :root { --cols: 1; } }
+
+/* ── Grid item ───────────────────────────────────────────── */
+.grid-item {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--border);
+
+  animation: fadeUp 0.45s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease, filter 0.4s ease;
+  filter: grayscale(15%);
+
+  /* Lazy: empieza invisible */
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.5s ease, filter 0.4s ease;
+}
+
+.grid-item img.loaded {
+  opacity: 1;
+}
+
+.grid-item:hover img {
+  transform: scale(1.04);
+  filter: grayscale(0%);
+}
+
+/* Overlay */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 3px;
+  padding: 14px 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.grid-item:hover .grid-overlay { opacity: 1; }
+
+.item-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.2;
+}
+.item-cat {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ── Lightbox ─────────────────────────────────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lb-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.93);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+.lb-img-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 90vw;
+  max-height: 86dvh;
+}
+
+.lb-img {
+  max-width: 100%;
+  max-height: 86dvh;
+  object-fit: contain;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.lb-img.show { opacity: 1; }
+
+/* Nav buttons */
+.lb-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  font-size: 18px;
+}
+.lb-btn:hover { color: var(--accent); border-color: var(--accent-dim); }
+.lb-prev { left: 20px; }
+.lb-next { right: 20px; }
+
+.lb-close {
+  position: fixed;
+  top: 20px; right: 20px;
+  z-index: 2;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 38px; height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  font-size: 16px;
+}
+.lb-close:hover { color: var(--text); border-color: var(--muted); }
+
+/* Info bar */
+.lb-info {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  white-space: nowrap;
+}
+.lb-info-cat   { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.lb-info-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; font-weight: 300; }
+.lb-info-count { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">
+    <a class="logo-name" href="index.html">PATRICIA NIETO</a>
+  </div>
+<div class="filters" id="filters" style="display:none"></div>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-bg" id="lb-bg"></div>
+  <button class="lb-btn lb-prev" id="lb-prev">&#8592;</button>
+  <div class="lb-img-wrap">
+    <img class="lb-img" id="lb-img" src="" alt="" />
+  </div>
+  <button class="lb-btn lb-next" id="lb-next">&#8594;</button>
+  <button class="lb-close" id="lb-close">&#10005;</button>
+  <div class="lb-info">
+    <span class="lb-info-cat"  id="lb-cat"></span>
+    <span class="lb-info-title" id="lb-title"></span>
+    <span class="lb-info-count" id="lb-count"></span>
+  </div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────
+// Cambia estas URLs por las tuyas. Cada foto tiene:
+//   src   → imagen grande (lightbox)
+//   thumb → imagen pequeña (grid)
+const PHOTOS = [
+  { id:1,  title:'Tiffany\'s',    category:'shop',   thumb:'img/Tiffany_007.jpg' ,  src:'img/Tiffany_007.jpg' },
+  { id:2,  title:'Tiffany\'s',    category:'shop',   thumb:'img/Tiffany_087.jpg' ,  src:'img/Tiffany_087.jpg' },
+  { id:3,  title:'Harmont and Blaine',    category:'shop',   thumb:'img/7P9A4102.jpg' ,  src:'img/7P9A4102.jpg' },
+  { id:4,  title:'El Viajero',        category:'deco',   thumb:'img/InesUrquijo_elViajero_2025_066.jpg',  src:'img/InesUrquijo_elViajero_2025_066.jpg' },
+  { id:5,  title:'Newdock',           category:'nave',   thumb:'img/BB2A1314-Mejorado-NR.jpg',  src:'img/BB2A1314-Mejorado-NR.jpg' },
+  { id:6,  title:'InPost',      category:'nave',   thumb:'img/InPost_SanFernando_094.jpg',  src:'img/InPost_SanFernando_094.jpg' },
+  { id:7,   title:'Harmont and Blaine',    category:'shop',   thumb:'img/7P9A4116.jpg' ,  src:'img/7P9A4116.jpg' },
+  { id:8,  title:'El Viajero',  category:'deco',    thumb:'img/InesUrquijo_elViajero_2025_195.jpg',  src:'img/InesUrquijo_elViajero_2025_195.jpg' },
+  { id:9,  title:'Newdock',          category:'nave',    thumb:'img/BB2A8786-Mejorado-NR.jpg',  src:'img/BB2A8786-Mejorado-NR.jpg' },
+  { id:10,  title:'Berrocales',          category:'casa',    thumb:'img/Savills_Berrocales_133.jpg',  src:'img/Savills_Berrocales_133.jpg' },
+  { id:11,   title:'Harmont and Blaine',    category:'shop',   thumb:'img/7P9A4579-Mejorado-NR.jpg' ,  src:'img/7P9A4579-Mejorado-NR.jpg' },
+  { id:12,  title:'Harmont and Blaine',    category:'shop',   thumb:'img/7P9A4261.jpg' ,  src:'img/7P9A4261.jpg' },
+  { id:13, title:'El Viajero',        category:'deco', thumb:'img/InesUrquijo_elViajero_2025_197.jpg',  src:'img/InesUrquijo_elViajero_2025_197.jpg' },
+  { id:14, title:'Berrocales',  category:'obra', thumb:'img/Savills_Berrocales_177.jpg',  src:'img/Savills_Berrocales_177.jpg' },
+  { id:15, title:'Harmont and Blaine',    category:'shop',   thumb:'img/7P9A4410.jpg' ,  src:'img/7P9A4410.jpg' },
+  { id:16,  title:'Harmont and Blaine',    category:'shop',   thumb:'img/7P9A4633-Mejorado-NR-2.jpg' ,  src:'img/7P9A4633-Mejorado-NR-2.jpg' },
+  { id:17, title:'Berrocales',          category:'obra', thumb:'img/Savills_Berrocales_183.jpg',  src:'img/Savills_Berrocales_183.jpg' },
+];
+
+// ── State ─────────────────────────────────────────────────────────
+let activeCategory = 'all';
+let filtered = [...PHOTOS];
+let lbIndex = 0;
+let lbOpen = false;
+let touchStartX = 0;
+let wheelLock = false;
+
+// ── DOM refs ──────────────────────────────────────────────────────
+const grid      = document.getElementById('grid');
+const filtersEl = document.getElementById('filters');
+const lightbox  = document.getElementById('lightbox');
+const lbImg     = document.getElementById('lb-img');
+const lbBg      = document.getElementById('lb-bg');
+const lbPrev    = document.getElementById('lb-prev');
+const lbNext    = document.getElementById('lb-next');
+const lbClose   = document.getElementById('lb-close');
+const lbCat     = document.getElementById('lb-cat');
+const lbTitle   = document.getElementById('lb-title');
+const lbCount   = document.getElementById('lb-count');
+
+// ── IntersectionObserver (lazy loading) ───────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const img = entry.target;
+    const src = img.dataset.src;
+    if (!src) return;
+    img.src = src;
+    img.removeAttribute('data-src');
+    img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+    observer.unobserve(img);
+  });
+}, { rootMargin: '200px' });
+
+// ── Render grid ───────────────────────────────────────────────────
+function renderGrid(photos) {
+  grid.innerHTML = '';
+  photos.forEach((photo, i) => {
+    const item = document.createElement('div');
+    item.className = 'grid-item';
+    item.style.animationDelay = `${i * 50}ms`;
+
+    const img = document.createElement('img');
+    img.dataset.src = photo.thumb;
+    img.alt = photo.title;
+    // placeholder SVG transparente
+    img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E";
+    observer.observe(img);
+
+    const overlay = document.createElement('div');
+    overlay.className = 'grid-overlay';
+    overlay.innerHTML = `
+      <span class="item-title">${photo.title}</span>
+      <span class="item-cat">${photo.category}</span>
+    `;
+
+    item.appendChild(img);
+    item.appendChild(overlay);
+    item.addEventListener('click', () => openLightbox(i));
+    grid.appendChild(item);
+  });
+}
+
+// ── Filters ───────────────────────────────────────────────────────
+const categories = ['all', 'shop', 'deco', 'casa', 'obra', 'nave'];
+
+function renderFilters() {
+  filtersEl.innerHTML = '';
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (cat === activeCategory ? ' active' : '');
+    btn.textContent = cat === 'all' ? 'All' : cat[0].toUpperCase() + cat.slice(1);
+    btn.addEventListener('click', () => {
+      if (cat === activeCategory) return;
+      activeCategory = cat;
+      filtered = cat === 'all' ? [...PHOTOS] : PHOTOS.filter(p => p.category === cat);
+      renderFilters();
+      renderGrid(filtered);
+    });
+    filtersEl.appendChild(btn);
+  });
+}
+
+// ── Lightbox ──────────────────────────────────────────────────────
+function openLightbox(index) {
+  lbIndex = index;
+  lbOpen = true;
+  document.body.style.overflow = 'hidden';
+  lightbox.classList.add('open');
+  loadLbPhoto();
+}
+
+function closeLightbox() {
+  lbOpen = false;
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navigate(dir) {
+  lbIndex = (lbIndex + dir + filtered.length) % filtered.length;
+  loadLbPhoto();
+}
+
+function loadLbPhoto() {
+  const photo = filtered[lbIndex];
+  lbImg.classList.remove('show');
+
+  const tmp = new Image();
+  tmp.src = photo.src;
+  tmp.onload = () => {
+    lbImg.src = photo.src;
+    lbImg.alt = photo.title;
+    requestAnimationFrame(() => lbImg.classList.add('show'));
+  };
+
+  lbCat.textContent   = photo.category;
+  lbTitle.textContent = photo.title;
+  lbCount.textContent = `${lbIndex + 1} / ${filtered.length}`;
+}
+
+// ── Events ────────────────────────────────────────────────────────
+lbBg.addEventListener('click', closeLightbox);
+lbClose.addEventListener('click', closeLightbox);
+lbPrev.addEventListener('click', () => navigate(-1));
+lbNext.addEventListener('click', () => navigate(1));
+
+document.addEventListener('keydown', e => {
+  if (!lbOpen) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowRight')  navigate(1);
+  if (e.key === 'ArrowLeft')   navigate(-1);
+});
+
+lightbox.addEventListener('wheel', e => {
+  if (!lbOpen || wheelLock) return;
+  e.preventDefault();
+  if (Math.abs(e.deltaY) < 15) return;
+  wheelLock = true;
+  navigate(e.deltaY > 0 ? 1 : -1);
+  setTimeout(() => { wheelLock = false; }, 380);
+}, { passive: false });
+
+lightbox.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+
+lightbox.addEventListener('touchend', e => {
+  if (!lbOpen) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 40) navigate(dx < 0 ? 1 : -1);
+}, { passive: true });
+
+// ── Init ──────────────────────────────────────────────────────────
+renderFilters();
+renderGrid(filtered);
+</script>
+</body>
+</html>
