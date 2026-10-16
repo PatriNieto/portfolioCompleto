@@ -316,7 +316,7 @@ header {
 //   src   → imagen grande (lightbox)
 //   thumb → imagen pequeña (grid)
 const PHOTOS = [
-  { id:20, title:'Savills',          category:'evento', thumb:'img/SavillsOfficePulse_263.jpg',  src:'img/SavillsOfficePulse_263.jpg' },
+  { id:20, title:'Savills',          category:'retrato', thumb:'img/SavillsOfficePulse_263.jpg',  src:'img/SavillsOfficePulse_263.jpg', thumbPosition:'top' },
   { id:22, title:'Savills',          category:'retrato', thumb:'img/BB2A9102-Mejorado-NR.jpg',  src:'img/BB2A9102-Mejorado-NR.jpg' },
     { id:15, title:'Randstad',    category:'retrato',   thumb:'img/Randstad_ForbesHouse_119.jpg' ,  src:'img/Randstad_ForbesHouse_119.jpg' },
 
@@ -331,7 +331,7 @@ const PHOTOS = [
   { id:8,  title:'BritChamber',          category:'retrato',    thumb:'img/BritChamber_PatriciaNieto_223.jpg',  src:'img/BritChamber_PatriciaNieto_223.jpg' },
   { id:8,  title:'BritChamber',          category:'evento',    thumb:'img/BritChamber_PatriciaNieto_241.jpg',  src:'img/BritChamber_PatriciaNieto_241.jpg' },
  
-  { id:11, title:'El Viajero',        category:'retrato', thumb:'img/Globalsuite_076.jpg',  src:'img/Globalsuite_076.jpg' },
+  { id:11, title:'Globalsuite',        category:'retrato', thumb:'img/Globalsuite_076.jpg',  src:'img/Globalsuite_076.jpg', thumbPosition:'top' },
   { id:12, title:'Randstad',  category:'evento ', thumb:'img/Randstad_ForbesHouse_003.jpg',  src:'img/Randstad_ForbesHouse_003.jpg' },
   { id:13, title:'Randstad',    category:'presentacion',   thumb:'img/Randstad_ForbesHouse_047.jpg' ,  src:'img/Randstad_ForbesHouse_047.jpg' },
   { id:14, title:'Randstad',    category:'presentacion',   thumb:'img/Randstad_ForbesHouse_082.jpg' ,  src:'img/Randstad_ForbesHouse_082.jpg' },
@@ -389,6 +389,7 @@ function renderGrid(photos) {
     const img = document.createElement('img');
     img.dataset.src = photo.thumb;
     img.alt = photo.title;
+    if (photo.thumbPosition) img.style.objectPosition = photo.thumbPosition;
     // placeholder SVG transparente
     img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E";
     observer.observe(img);
