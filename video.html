@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patricia Nieto — Vídeo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Inconsolata:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #090909;
+      --border: #1e1e1e;
+      --text: #ddd8ce;
+      --cols: 3;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100dvh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inconsolata', monospace;
+      font-size: 13px;
+    }
+
+    body.preview-open { overflow: hidden; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 64px;
+      padding: 0 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .logo-name {
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(var(--cols), 1fr);
+      gap: 3px;
+      padding: 3px;
+    }
+
+    .grid-item {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      padding: 0;
+      border: 0;
+      background: var(--border);
+      cursor: pointer;
+      animation: fadeUp 0.45s ease both;
+    }
+
+    .grid-item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .grid-item:hover img { transform: scale(1.03); }
+
+    .grid-item:focus-visible {
+      outline: 1px solid var(--text);
+      outline-offset: -2px;
+    }
+
+    .preview {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.92);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .preview.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .preview iframe {
+      display: block;
+      width: min(90vw, 1200px);
+      height: min(86vh, 675px);
+      border: 0;
+      background: #000;
+    }
+
+    .preview iframe[data-orientation="portrait"] {
+      width: min(48vh, 90vw);
+      height: min(86vh, 900px);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) { :root { --cols: 2; } }
+    @media (max-width: 520px) {
+      :root { --cols: 1; }
+      .logo-name { font-size: 15px; letter-spacing: 0.18em; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .preview { padding: 12px; }
+      .preview iframe { width: 94vw; height: 82vh; }
+      .preview iframe[data-orientation="portrait"] { width: min(48vh, 94vw); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo-name" href="index.html">PATRICIA NIETO</a>
+  </header>
+
+  <main class="grid" aria-label="Vídeo">
+    <button class="grid-item" type="button" data-video="videos/Pinko_AREA_1_1.mp4" data-orientation="portrait" aria-label="Reproducir vídeo Pinko AREA">
+      <img src="videos/posters/Pinko_AREA.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/InPostSF_1_1.mp4" aria-label="Reproducir vídeo InPost San Fernando">
+      <img src="videos/posters/InPostSF.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/InPost_ATM_cartelas.mp4" data-orientation="portrait" aria-label="Reproducir vídeo InPost ATM">
+      <img src="videos/posters/InPost_ATM_cartelas.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/Oktobertech2025_1_1_1.mp4" aria-label="Reproducir vídeo Oktobertech 2025">
+      <img src="videos/posters/Oktobertech2025.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/InesUrquijo_ElViajeroNavidad2025_1_1.mp4" data-orientation="portrait" aria-label="Reproducir vídeo El Viajero Navidad 2025">
+      <img src="videos/posters/InesUrquijo_ElViajeroNavidad2025.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/AREAInPostATM_2a.mp4" aria-label="Reproducir vídeo AREA InPost ATM">
+      <img src="videos/posters/AREAInPostATM_2.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/InPost_Atletico_1.mp4" aria-label="Reproducir vídeo InPost Atlético">
+      <img src="videos/posters/InPost_Atletico.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/InesUrquijo_2.mp4" data-orientation="portrait" aria-label="Reproducir vídeo Inés Urquijo">
+      <img src="videos/posters/InesUrquijo_.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/InPost%20Navidad_1_1_1.mp4" aria-label="Reproducir vídeo InPost Navidad">
+      <img src="videos/posters/InPost%20Navidad.jpg" alt="" loading="lazy" />
+    </button>
+    <button class="grid-item" type="button" data-video="videos/InesUrquijo_BodaRest1.mp4" data-orientation="portrait" aria-label="Reproducir vídeo boda restaurante">
+      <img src="videos/posters/InesUrquijo_BodaRest.jpg" alt="" loading="lazy" />
+    </button>
+  </main>
+
+  <div class="preview" id="preview" role="dialog" aria-modal="true" aria-label="Vista previa del vídeo" aria-hidden="true">
+    <iframe id="preview-frame" title="Reproductor de vídeo" allow="autoplay; fullscreen"></iframe>
+  </div>
+
+  <script>
+    const preview = document.getElementById('preview');
+    const previewFrame = document.getElementById('preview-frame');
+    const videoCards = document.querySelectorAll('.grid-item');
+
+    function closePreview() {
+      if (!preview.classList.contains('open')) return;
+      preview.classList.remove('open');
+      preview.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('preview-open');
+      previewFrame.removeAttribute('src');
+      previewFrame.removeAttribute('data-orientation');
+    }
+
+    videoCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        previewFrame.src = card.dataset.video;
+        previewFrame.title = card.getAttribute('aria-label');
+        if (card.dataset.orientation) {
+          previewFrame.dataset.orientation = card.dataset.orientation;
+        }
+        preview.classList.add('open');
+        preview.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('preview-open');
+      });
+    });
+
+    preview.addEventListener('click', (event) => {
+      if (event.target === preview) closePreview();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && preview.classList.contains('open')) {
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>

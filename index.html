@@ -73,7 +73,7 @@ header {
 main {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
 }
 
 @media (max-width: 1000px) {
@@ -97,12 +97,12 @@ main {
   animation: fadeUp 0.7s ease both;
 }
 
-/* Desktop: 4 columnas → sin borde izq. en el 1º de cada fila (1, 5, 9…) */
-main .section-link:nth-child(4n+1) { border-left: none; }
+/* Desktop: 5 columnas → sin borde izq. en el 1º de cada fila */
+main .section-link:nth-child(5n+1) { border-left: none; }
 
 /* Tablet: 2 columnas → sin borde izq. en impares, sin borde arriba en los 2 primeros */
 @media (max-width: 1000px) {
-  main .section-link:nth-child(4n+1) { border-left: 1px solid var(--border); }
+  main .section-link:nth-child(5n+1) { border-left: 1px solid var(--border); }
   main .section-link:nth-child(2n+1) { border-left: none; }
   main .section-link:nth-child(-n+2) { border-top: none; }
 }
@@ -117,6 +117,7 @@ main .section-link:nth-child(4n+1) { border-left: none; }
 .section-link:nth-child(2) { animation-delay: 0.22s; }
 .section-link:nth-child(3) { animation-delay: 0.29s; }
 .section-link:nth-child(4) { animation-delay: 0.36s; }
+.section-link:nth-child(5) { animation-delay: 0.43s; }
 
 .section-bg {
   position: absolute;
@@ -252,7 +253,16 @@ footer {
 
   </div>
 </a>
-    </main>
+
+        <a class="section-link" href="video.html">
+            <div class="section-bg" style="background-image:url('img/7P9A4410.jpg'); background-size:cover; background-position:center;"></div>
+            <div class="section-veil"></div>
+            <div class="section-content">
+            <span class="section-title">Vídeo</span>
+            <span class="section-line"></span>
+            </div>
+        </a>
+        </main>
 
     <footer>
     © Patricia Nieto
