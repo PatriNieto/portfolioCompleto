@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Patricia Nieto — Producto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Inconsolata:wght@300;400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
 
 <style>
 /* ── Variables ───────────────────────────────────────────── */
 :root {
-  --bg:         #090909;
-  --border:     #1e1e1e;
-  --text:       #ddd8ce;
-  --muted:      #444;
-  --accent:     #b8a47a;
-  --accent-dim: #5a4e30;
+  --bg:         #f4f2ec;
+  --surface:    #e9e6dd;
+  --border:     #d8d5cc;
+  --text:       #252622;
+  --muted:      #77786f;
+  --accent:     #b44f34;
+  --accent-dim: #8f3d2a;
   --cols: 3;
 }
 
@@ -27,9 +28,10 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inconsolata', monospace;
-  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
   min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ── Header ──────────────────────────────────────────────── */
@@ -39,9 +41,11 @@ header {
   z-index: 50;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 32px;
-  height: 64px;
+  justify-content: space-between;
+  width: min(1380px, calc(100% - 112px));
+  height: 88px;
+  margin-inline: auto;
+  padding: 0;
   border-bottom: 1px solid var(--border);
   background: var(--bg);
 }
@@ -49,15 +53,16 @@ header {
 .logo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2px;
+  align-items: flex-start;
+  gap: 4px;
+  text-decoration: none;
 }
 
 .logo-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
-  font-weight: 300;
-  letter-spacing: 0.4em;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
   line-height: 1;
   white-space: nowrap;
   color: var(--text);
@@ -73,16 +78,38 @@ header {
 
 @media (max-width: 520px) {
   .logo-name {
-    font-size: 15px;
-    letter-spacing: 0.18em;
+    font-size: 12px;
+    letter-spacing: 0.1em;
   }
 }
 
 .logo-sub {
-  font-size: 9px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
   color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+.back-link:hover { color: var(--accent); }
+.back-link span { color: var(--accent); font-size: 16px; }
+
+@media (max-width: 760px) { header { width: calc(100% - 48px); } }
+@media (max-width: 480px) {
+  header { width: calc(100% - 36px); height: 76px; }
+  .logo-sub { font-size: 7px; }
+  .back-link { gap: 5px; font-size: 8px; letter-spacing: 0.08em; }
 }
 
 /* ── Filters ─────────────────────────────────────────────── */
@@ -95,7 +122,7 @@ header {
   background: none;
   border: 1px solid transparent;
   color: var(--muted);
-  font-family: 'Inconsolata', monospace;
+  font-family: 'DM Sans', sans-serif;
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -109,13 +136,19 @@ header {
 /* ── Grid ────────────────────────────────────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(var(--cols), 1fr);
-  gap: 2px;
-  padding: 2px;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 24px);
+  width: min(1500px, calc(100% - 112px));
+  margin: 0 auto;
+  padding: clamp(28px, 4vw, 56px) 0;
 }
 
 @media (max-width: 900px) { :root { --cols: 2; } }
-@media (max-width: 520px) { :root { --cols: 1; } }
+@media (max-width: 760px) { .grid { width: calc(100% - 48px); } }
+@media (max-width: 520px) {
+  :root { --cols: 1; }
+  .grid { width: calc(100% - 36px); gap: 18px; padding-top: 24px; }
+}
 
 /* ── Grid item ───────────────────────────────────────────── */
 .grid-item {
@@ -123,7 +156,7 @@ header {
   aspect-ratio: 4/3;
   overflow: hidden;
   cursor: pointer;
-  background: var(--border);
+  background: var(--surface);
 
   animation: fadeUp 0.45s ease both;
 }
@@ -138,40 +171,31 @@ header {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease, filter 0.4s ease;
-  filter: grayscale(15%);
-
-  /* Lazy: empieza invisible */
-  opacity: 0;
-  transition: opacity 0.4s ease, transform 0.5s ease, filter 0.4s ease;
-}
-
-.grid-item img.loaded {
-  opacity: 1;
+  transition: transform 0.5s ease;
 }
 
 .grid-item:hover img {
   transform: scale(1.04);
-  filter: grayscale(0%);
+  filter: none;
 }
 
 /* Overlay */
 .grid-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%);
+  background: linear-gradient(to top, rgba(20, 20, 18, 0.72) 0%, rgba(20, 20, 18, 0.05) 65%, transparent 100%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 3px;
   padding: 14px 12px;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.3s ease;
 }
 .grid-item:hover .grid-overlay { opacity: 1; }
 
 .item-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 17px;
   font-style: italic;
   font-weight: 300;
@@ -205,7 +229,7 @@ header {
 .lb-bg {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.93);
+  background: rgba(25, 25, 23, 0.94);
   backdrop-filter: blur(6px);
   cursor: pointer;
 }
@@ -234,8 +258,8 @@ header {
   transform: translateY(-50%);
   z-index: 2;
   background: none;
-  border: 1px solid var(--border);
-  color: var(--muted);
+  border: 1px solid rgba(244, 242, 236, 0.35);
+  color: var(--bg);
   width: 46px;
   height: 46px;
   display: flex;
@@ -245,7 +269,7 @@ header {
   transition: color 0.2s, border-color 0.2s;
   font-size: 18px;
 }
-.lb-btn:hover { color: var(--accent); border-color: var(--accent-dim); }
+.lb-btn:hover { color: #fff; border-color: var(--accent); background: var(--accent); }
 .lb-prev { left: 20px; }
 .lb-next { right: 20px; }
 
@@ -254,8 +278,8 @@ header {
   top: 20px; right: 20px;
   z-index: 2;
   background: none;
-  border: 1px solid var(--border);
-  color: var(--muted);
+  border: 1px solid rgba(244, 242, 236, 0.35);
+  color: var(--bg);
   width: 38px; height: 38px;
   display: flex;
   align-items: center;
@@ -264,7 +288,7 @@ header {
   transition: color 0.2s, border-color 0.2s;
   font-size: 16px;
 }
-.lb-close:hover { color: var(--text); border-color: var(--muted); }
+.lb-close:hover { color: #fff; border-color: var(--accent); background: var(--accent); }
 
 /* Info bar */
 .lb-info {
@@ -279,8 +303,8 @@ header {
   white-space: nowrap;
 }
 .lb-info-cat   { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
-.lb-info-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; font-weight: 300; }
-.lb-info-count { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
+.lb-info-title { color: var(--bg); font-family: 'DM Serif Display', serif; font-size: 18px; font-style: italic; font-weight: 300; }
+.lb-info-count { color: rgba(244, 242, 236, 0.7); font-size: 10px; letter-spacing: 0.1em; }
 </style>
 </head>
 <body>
@@ -288,8 +312,10 @@ header {
 <header>
 <div class="logo">
     <a class="logo-name" href="index.html">PATRICIA NIETO</a>
+    <span class="logo-sub">Fotografía + vídeo</span>
   </div>
 <div class="filters" id="filters" style="display:none"></div>
+<a class="back-link" href="index.html#proyectos">Volver a proyectos <span aria-hidden="true">↗</span></a>
 </header>
 
 <main class="grid" id="grid"></main>
@@ -358,7 +384,6 @@ const observer = new IntersectionObserver((entries) => {
     if (!src) return;
     img.src = src;
     img.removeAttribute('data-src');
-    img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
     observer.unobserve(img);
   });
 }, { rootMargin: '200px' });

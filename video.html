@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Patricia Nieto — Video</title>
+  <title>Patricia Nieto — Vídeo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Inconsolata:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #090909;
-      --border: #1e1e1e;
-      --text: #ddd8ce;
+      --bg: #f4f2ec;
+      --surface: #e9e6dd;
+      --border: #d8d5cc;
+      --text: #252622;
+      --muted: #77786f;
+      --accent: #b44f34;
       --cols: 3;
     }
 
@@ -21,8 +24,9 @@
       min-height: 100dvh;
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inconsolata', monospace;
+      font-family: 'DM Sans', sans-serif;
       font-size: 13px;
+      -webkit-font-smoothing: antialiased;
     }
 
     body.preview-open { overflow: hidden; }
@@ -33,29 +37,63 @@
       z-index: 50;
       display: flex;
       align-items: center;
-      justify-content: center;
-      height: 64px;
-      padding: 0 32px;
+      justify-content: space-between;
+      width: min(1380px, calc(100% - 112px));
+      height: 88px;
+      margin-inline: auto;
+      padding: 0;
       border-bottom: 1px solid var(--border);
       background: var(--bg);
     }
 
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      text-decoration: none;
+    }
+
     .logo-name {
       color: var(--text);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      font-weight: 300;
-      letter-spacing: 0.4em;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
       line-height: 1;
       text-decoration: none;
       white-space: nowrap;
     }
 
+    .logo-sub {
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: var(--accent); }
+    .back-link span { color: var(--accent); font-size: 16px; }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(var(--cols), 1fr);
-      gap: 3px;
-      padding: 3px;
+      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+      gap: clamp(12px, 1.8vw, 24px);
+      width: min(1500px, calc(100% - 112px));
+      margin: 0 auto;
+      padding: clamp(28px, 4vw, 56px) 0;
     }
 
     .grid-item {
@@ -65,7 +103,7 @@
       overflow: hidden;
       padding: 0;
       border: 0;
-      background: var(--border);
+      background: var(--surface);
       cursor: pointer;
       animation: fadeUp 0.45s ease both;
     }
@@ -75,14 +113,14 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s ease;
+      transition: transform 0.5s ease;
     }
 
-    .grid-item:hover img { transform: scale(1.03); }
+    .grid-item:hover img { transform: scale(1.035); }
 
     .grid-item:focus-visible {
-      outline: 1px solid var(--text);
-      outline-offset: -2px;
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
     }
 
     .preview {
@@ -93,7 +131,7 @@
       align-items: center;
       justify-content: center;
       padding: 24px;
-      background: rgba(0, 0, 0, 0.92);
+      background: rgba(25, 25, 23, 0.94);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease;
@@ -123,9 +161,16 @@
     }
 
     @media (max-width: 900px) { :root { --cols: 2; } }
+    @media (max-width: 760px) {
+      header, .grid { width: calc(100% - 48px); }
+    }
     @media (max-width: 520px) {
       :root { --cols: 1; }
-      .logo-name { font-size: 15px; letter-spacing: 0.18em; }
+      header { width: calc(100% - 36px); height: 76px; }
+      .grid { width: calc(100% - 36px); gap: 18px; padding-top: 24px; }
+      .logo-name { font-size: 12px; letter-spacing: 0.1em; }
+      .logo-sub { font-size: 7px; }
+      .back-link { gap: 5px; font-size: 8px; letter-spacing: 0.08em; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -146,7 +191,11 @@
 </head>
 <body>
   <header>
-    <a class="logo-name" href="index.html">PATRICIA NIETO</a>
+    <a class="logo" href="index.html">
+      <span class="logo-name">PATRICIA NIETO</span>
+      <span class="logo-sub">Fotografía + vídeo</span>
+    </a>
+    <a class="back-link" href="index.html#proyectos">Volver a proyectos <span aria-hidden="true">↗</span></a>
   </header>
 
   <main class="grid" aria-label="Vídeo">
