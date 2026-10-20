@@ -64,7 +64,7 @@
     }
     .site-header.is-scrolled {
       border-color: transparent;
-      background: rgb(244 242 236 / 88%);
+      background: rgb(244 242 236 / 58%);
       color: var(--text);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -84,28 +84,16 @@
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid rgb(255 255 255 / 54%);
       color: white;
       font-size: 12px;
       letter-spacing: .01em;
       text-decoration: none;
-      transition: color .2s ease, border-color .2s ease;
+      transition: color .2s ease;
       text-transform: none;
     }
-    .site-header.is-scrolled .nav-link { border-color: var(--line); color: var(--text); }
-    .site-header.is-scrolled .nav-arrow { color: var(--accent); }
-    .site-header.is-scrolled .nav-link:hover { border-color: var(--accent); color: var(--accent); }
-    .nav-link:hover { border-color: white; color: white; }
-    .nav-arrow { color: white; font-size: 17px; }
-    .site-nav { display: flex; align-items: center; }
-    .footer-contact {
-      color: var(--text);
-      text-decoration: none;
-      transition: color .2s ease;
-    }
-    .footer-contact:hover { color: var(--accent); }
-
+    .site-header.is-scrolled .nav-link { color: var(--text); }
+    .site-header.is-scrolled .nav-link:hover, .nav-link:hover { color: var(--accent); }
+    .site-nav { display: flex; align-items: center; gap: clamp(22px, 3vw, 42px); }
     .hero {
       position: relative;
       width: 100%;
@@ -142,6 +130,11 @@
       object-fit: cover;
     }
     .hero-image img { position: absolute; inset: 0; }
+    .hero-slide {
+      opacity: 0;
+      transition: opacity 1.4s ease-in-out;
+    }
+    .hero-slide.is-active { opacity: 1; }
     .projects { padding-block: 64px 120px; }
     .project-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 42px 24px; }
     .project-card {
@@ -185,17 +178,54 @@
     .project-card:hover .project-arrow { transform: translate(3px, -3px); }
 
     .site-footer {
+      width: 100%;
+      padding: clamp(36px, 6vw, 80px) clamp(24px, 5vw, 72px) 24px;
+      background: var(--text);
+      color: var(--bg);
+    }
+    .footer-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      max-width: 1500px;
+      margin: 0 auto 24px;
+      color: rgb(244 242 236 / 68%);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .footer-contact {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      min-height: 78px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
+      max-width: 1500px;
+      margin: 0 auto;
+      color: var(--bg);
+      font-size: clamp(22px, 5vw, 64px);
+      font-weight: 500;
+      letter-spacing: -.065em;
+      line-height: 1.05;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+      transition: color .2s ease;
+    }
+    .footer-contact:hover { color: #e5b09f; }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      max-width: 1500px;
+      margin: clamp(32px, 6vw, 76px) auto 0;
+      padding-top: 18px;
+      border-top: 1px solid rgb(244 242 236 / 22%);
+      color: rgb(244 242 236 / 68%);
     }
     .footer-note { font-size: 9px; }
-    .footer-name { font-size: 12px; font-weight: 600; }
-    .footer-contact { font-size: 12px; }
+    .footer-name { color: var(--bg); font-size: 12px; font-weight: 600; }
     .footer-credit { display: flex; align-items: center; gap: 14px; }
 
     @media (max-width: 760px) {
@@ -221,8 +251,11 @@
       .project-card, .project-card:nth-child(n) { grid-column: 1; }
       .project-card:nth-child(n) .project-image { aspect-ratio: 1.25; }
       .project-title { font-size: 22px; }
-      .site-footer { min-height: 70px; flex-wrap: wrap; padding-block: 18px; }
-      .footer-credit { align-items: flex-end; flex-direction: column; gap: 4px; }
+      .site-footer { padding: 34px 18px 20px; }
+      .footer-topline { margin-bottom: 18px; }
+      .footer-contact { gap: 8px; letter-spacing: -.07em; }
+      .footer-bottom { align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 36px; }
+      .footer-credit { align-items: flex-start; flex-direction: column; gap: 4px; }
     }
     @media (max-width: 340px) {
       .wordmark-name { font-size: 10px; letter-spacing: .1em; }
@@ -247,14 +280,16 @@
       <span class="wordmark-caption">Fotografía + vídeo</span>
     </a>
     <nav class="site-nav" aria-label="Navegación principal">
-      <a class="nav-link" href="#proyectos">Proyectos <span class="nav-arrow" aria-hidden="true">↘</span></a>
+      <a class="nav-link" href="#proyectos">Proyectos</a>
+      <a class="nav-link" href="#contacto">Contacto</a>
     </nav>
   </header>
 
   <main id="main">
     <section class="hero" aria-label="Fotografía de portada">
       <div class="hero-image">
-        <img src="img/Tiffany_063.jpg" alt="Composición floral de Tiffany &amp; Co. fotografiada por Patricia Nieto" fetchpriority="high" />
+        <img class="hero-slide is-active" src="img/Tiffany_063.jpg" alt="Composición floral de Tiffany &amp; Co. fotografiada por Patricia Nieto" fetchpriority="high" />
+        <img class="hero-slide" alt="" aria-hidden="true" />
         <h1 class="visually-hidden">Fotografía y vídeo de Patricia Nieto</h1>
       </div>
     </section>
@@ -295,11 +330,18 @@
     </section>
   </main>
 
-  <footer class="site-footer wrap">
-    <a class="footer-contact" href="mailto:patricianieto2.0@gmail.com">patricianieto2.0@gmail.com</a>
-    <div class="footer-credit">
+  <footer class="site-footer" id="contacto">
+    <div class="footer-topline">
+      <span>Contacto</span>
+    </div>
+    <a class="footer-contact" href="mailto:patricianieto2.0@gmail.com">
+      <span>patricianieto2.0@gmail.com</span>
+    </a>
+    <div class="footer-bottom">
       <span class="footer-name">Patricia Nieto</span>
-      <span class="footer-note">© <span id="year">2026</span> · Fotografía + vídeo</span>
+      <div class="footer-credit">
+        <span class="footer-note">© <span id="year">2026</span> · Fotografía + vídeo</span>
+      </div>
     </div>
   </footer>
   <script>
@@ -310,6 +352,68 @@
 
     updateHeaderAppearance();
     window.addEventListener('scroll', updateHeaderAppearance, { passive: true });
+
+    const heroSlides = [
+      {
+        src: 'img/Tiffany_063.jpg',
+        alt: 'Composición floral de Tiffany & Co. fotografiada por Patricia Nieto'
+      },
+      {
+        src: 'img/InesUrquijo_elViajero_2025_066.jpg',
+        alt: 'Interior de El Viajero fotografiado por Patricia Nieto'
+      },
+      {
+        src: 'img/7P9A3878.jpg',
+        alt: 'Instante de una boda fotografiado por Patricia Nieto'
+      },
+      {
+        src: 'img/BritChamber_PatriciaNieto_181.jpg',
+        alt: 'Evento corporativo fotografiado por Patricia Nieto'
+      },
+      {
+        src: 'img/IMG_3514.jpg',
+        alt: 'Cóctel fotografiado para un proyecto de producto'
+      }
+    ];
+    const heroImages = document.querySelectorAll('.hero-slide');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let currentSlide = 0;
+    let activeImage = heroImages[0];
+    let heroSlideTimer;
+
+    function showNextHeroSlide() {
+      if (reduceMotion.matches) return;
+
+      const nextSlide = (currentSlide + 1) % heroSlides.length;
+      const preload = new Image();
+      preload.onload = () => {
+        const nextImage = activeImage === heroImages[0] ? heroImages[1] : heroImages[0];
+        nextImage.src = heroSlides[nextSlide].src;
+        nextImage.alt = heroSlides[nextSlide].alt;
+        nextImage.removeAttribute('aria-hidden');
+        activeImage.setAttribute('aria-hidden', 'true');
+        activeImage.classList.remove('is-active');
+        nextImage.classList.add('is-active');
+        activeImage = nextImage;
+        currentSlide = nextSlide;
+        scheduleNextHeroSlide();
+      };
+      preload.onerror = () => {
+        console.error(`No se pudo cargar la imagen de portada: ${heroSlides[nextSlide].src}`);
+        scheduleNextHeroSlide();
+      };
+      preload.src = heroSlides[nextSlide].src;
+    }
+
+    function scheduleNextHeroSlide() {
+      window.clearTimeout(heroSlideTimer);
+      if (!reduceMotion.matches) {
+        heroSlideTimer = window.setTimeout(showNextHeroSlide, 6500);
+      }
+    }
+
+    reduceMotion.addEventListener('change', scheduleNextHeroSlide);
+    scheduleNextHeroSlide();
   </script>
 </body>
 </html>
