@@ -31,6 +31,8 @@ body {
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -92,23 +94,24 @@ header {
 .back-link {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   color: var(--text);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: -0.01em;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
   text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
-.back-link:hover { color: var(--accent); }
+.back-link:hover { border-color: var(--accent); color: var(--accent); }
 .back-link span { color: var(--accent); font-size: 16px; }
 
 @media (max-width: 760px) { header { width: calc(100% - 48px); } }
 @media (max-width: 480px) {
   header { width: calc(100% - 36px); height: 76px; }
   .logo-sub { font-size: 7px; }
-  .back-link { gap: 5px; font-size: 8px; letter-spacing: 0.08em; }
+  .back-link { gap: 6px; font-size: 11px; }
 }
 
 /* ── Filters ─────────────────────────────────────────────── */
@@ -140,13 +143,35 @@ header {
   width: min(1500px, calc(100% - 112px));
   margin: 0 auto;
   padding: clamp(28px, 4vw, 56px) 0;
+  flex: 1;
 }
 
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: min(1380px, calc(100% - 112px));
+  min-height: 78px;
+  margin: auto auto 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}
+.footer-contact { color: var(--text); font-size: 12px; text-decoration: none; transition: color 0.2s ease; }
+.footer-contact:hover { color: var(--accent); }
+.footer-credit { display: flex; align-items: center; gap: 14px; }
+.footer-name { font-size: 12px; font-weight: 600; }
+.footer-note { font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+
 @media (max-width: 900px) { :root { --cols: 2; } }
-@media (max-width: 760px) { .grid { width: calc(100% - 48px); } }
+@media (max-width: 760px) {
+  .grid, .site-footer { width: calc(100% - 48px); }
+}
 @media (max-width: 520px) {
   :root { --cols: 1; }
   .grid { width: calc(100% - 36px); gap: 18px; padding-top: 24px; }
+  .site-footer { width: calc(100% - 36px); min-height: 70px; flex-wrap: wrap; padding-block: 18px; }
+  .footer-credit { align-items: flex-end; flex-direction: column; gap: 4px; }
 }
 
 /* ── Grid item ───────────────────────────────────────────── */
@@ -176,36 +201,6 @@ header {
 .grid-item:hover img {
   transform: scale(1.04);
   filter: none;
-}
-
-/* Overlay */
-.grid-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(20, 20, 18, 0.72) 0%, rgba(20, 20, 18, 0.05) 65%, transparent 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 3px;
-  padding: 14px 12px;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-.grid-item:hover .grid-overlay { opacity: 1; }
-
-.item-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 17px;
-  font-style: italic;
-  font-weight: 300;
-  color: #fff;
-  line-height: 1.2;
-}
-.item-cat {
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
 }
 
 /* ── Lightbox ─────────────────────────────────────────────── */
@@ -314,10 +309,17 @@ header {
     <span class="logo-sub">Fotografía + vídeo</span>
   </div>
 <div class="filters" id="filters" style="display:none"></div>
-<a class="back-link" href="index.html#proyectos">Volver a proyectos <span aria-hidden="true">↗</span></a>
+<a class="back-link" href="index.html#proyectos"><span aria-hidden="true">←</span> Proyectos</a>
 </header>
 
 <main class="grid" id="grid"></main>
+<footer class="site-footer">
+  <a class="footer-contact" href="mailto:patricianieto2.0@gmail.com">patricianieto2.0@gmail.com</a>
+  <div class="footer-credit">
+    <span class="footer-name">Patricia Nieto</span>
+    <span class="footer-note">© 2026 · Fotografía + vídeo</span>
+  </div>
+</footer>
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox">
@@ -409,15 +411,7 @@ function renderGrid(photos) {
     img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E";
     observer.observe(img);
 
-    const overlay = document.createElement('div');
-    overlay.className = 'grid-overlay';
-    overlay.innerHTML = `
-      <span class="item-title">${photo.title}</span>
-      <span class="item-cat">${photo.category}</span>
-    `;
-
     item.appendChild(img);
-    item.appendChild(overlay);
     item.addEventListener('click', () => openLightbox(i));
     grid.appendChild(item);
   });

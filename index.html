@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f4f2ec" />
-  <meta name="description" content="Fotografía y vídeo de Patricia Nieto para marcas, espacios y momentos especiales." />
+  <meta name="description" content="Portfolio de fotografía y vídeo de Patricia Nieto." />
   <title>Patricia Nieto — Fotografía y vídeo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +23,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 104px; }
     body {
       margin: 0;
       background: var(--bg);
@@ -48,82 +48,92 @@
     .skip-link:focus { transform: translateY(0); }
 
     .site-header {
-      position: relative;
-      z-index: 2;
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: space-between;
       min-height: 88px;
-      border-bottom: 1px solid var(--line);
+      padding-inline: clamp(24px, 5vw, 72px);
+      border-bottom: 0;
+      background: transparent;
+      color: white;
+      text-shadow: 0 1px 10px rgb(0 0 0 / 35%);
+      transition: background-color .3s ease, border-color .3s ease, color .3s ease;
+    }
+    .site-header.is-scrolled {
+      border-color: transparent;
+      background: rgb(244 242 236 / 88%);
+      color: var(--text);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      text-shadow: none;
     }
     .wordmark { display: inline-flex; flex-direction: column; gap: 4px; text-decoration: none; }
     .wordmark-name { font-size: 14px; font-weight: 700; letter-spacing: .13em; }
-    .wordmark-caption, .nav-link, .eyebrow, .project-number, .footer-note {
+    .wordmark-caption, .nav-link, .eyebrow, .footer-note {
       font-size: 10px;
       font-weight: 600;
       letter-spacing: .15em;
       text-transform: uppercase;
     }
     .wordmark-caption { color: var(--muted); }
+    .site-header:not(.is-scrolled) .wordmark-caption { color: rgb(255 255 255 / 82%); }
     .nav-link {
       display: inline-flex;
       align-items: center;
       gap: 12px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgb(255 255 255 / 54%);
+      color: white;
+      font-size: 12px;
+      letter-spacing: .01em;
+      text-decoration: none;
+      transition: color .2s ease, border-color .2s ease;
+      text-transform: none;
+    }
+    .site-header.is-scrolled .nav-link { border-color: var(--line); color: var(--text); }
+    .site-header.is-scrolled .nav-arrow { color: var(--accent); }
+    .site-header.is-scrolled .nav-link:hover { border-color: var(--accent); color: var(--accent); }
+    .nav-link:hover { border-color: white; color: white; }
+    .nav-arrow { color: white; font-size: 17px; }
+    .site-nav { display: flex; align-items: center; }
+    .footer-contact {
+      color: var(--text);
       text-decoration: none;
       transition: color .2s ease;
     }
-    .nav-link:hover { color: var(--accent); }
-    .nav-arrow { color: var(--accent); font-size: 17px; }
+    .footer-contact:hover { color: var(--accent); }
 
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
-      align-items: center;
-      gap: clamp(40px, 8vw, 120px);
-      padding-block: clamp(64px, 9vw, 132px);
+      position: relative;
+      width: 100%;
+      padding: 0;
     }
-    .hero-copy { max-width: 610px; }
-    .eyebrow { display: flex; align-items: center; gap: 12px; color: var(--accent); }
-    .eyebrow::before { width: 28px; height: 1px; background: currentColor; content: ""; }
-    h1 {
-      margin: 26px 0 24px;
-      font-size: clamp(54px, 7.2vw, 104px);
-      font-weight: 500;
-      letter-spacing: -.075em;
-      line-height: .98;
-    }
-    h1 em {
-      color: var(--accent);
-      font-family: var(--font-serif);
-      font-weight: 400;
-      letter-spacing: -.045em;
-    }
-    .hero-description {
-      max-width: 390px;
-      margin: 0;
-      color: var(--muted);
-      font-size: clamp(15px, 1.4vw, 18px);
-      line-height: 1.75;
-    }
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 18px;
-      margin-top: 34px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--text);
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color .2s ease, border-color .2s ease;
-    }
-    .hero-cta:hover { border-color: var(--accent); color: var(--accent); }
-    .hero-cta span { color: var(--accent); font-size: 18px; }
     .hero-image {
       position: relative;
       min-width: 0;
-      aspect-ratio: 1.16;
+      height: 100svh;
+      min-height: 560px;
+      overflow: hidden;
       background: var(--surface);
+      animation: image-enter 1s cubic-bezier(.2, .65, .3, 1) both;
+    }
+    @keyframes image-enter {
+      from { opacity: .8; transform: scale(1.02); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
     .hero-image img, .project-image img {
       display: block;
@@ -132,9 +142,22 @@
       object-fit: cover;
     }
     .hero-image img { position: absolute; inset: 0; }
-    .projects { padding-block: 32px 120px; }
+    .projects { padding-block: 64px 120px; }
     .project-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 42px 24px; }
-    .project-card { grid-column: span 4; min-width: 0; text-decoration: none; }
+    .project-card {
+      grid-column: span 4;
+      min-width: 0;
+      text-decoration: none;
+      animation: project-enter .6s cubic-bezier(.2, .65, .3, 1) both;
+    }
+    .project-card:nth-child(2) { animation-delay: .06s; }
+    .project-card:nth-child(3) { animation-delay: .12s; }
+    .project-card:nth-child(4) { animation-delay: .18s; }
+    .project-card:nth-child(5) { animation-delay: .24s; }
+    @keyframes project-enter {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     .project-card:nth-child(1) { grid-column: span 7; }
     .project-card:nth-child(2) { grid-column: span 5; }
     .project-card:nth-child(3) { grid-column: span 5; }
@@ -150,7 +173,6 @@
     .project-card:nth-child(2) .project-image { aspect-ratio: 1.48; }
     .project-image img { transition: transform .65s cubic-bezier(.2, .65, .3, 1); }
     .project-card:hover .project-image img { transform: scale(1.045); }
-    .project-number { position: absolute; top: 14px; left: 14px; color: white; text-shadow: 0 1px 8px #0008; }
     .project-details {
       display: flex;
       align-items: center;
@@ -173,15 +195,14 @@
     }
     .footer-note { font-size: 9px; }
     .footer-name { font-size: 12px; font-weight: 600; }
+    .footer-contact { font-size: 12px; }
+    .footer-credit { display: flex; align-items: center; gap: 14px; }
 
     @media (max-width: 760px) {
       .wrap { width: min(100% - 48px, 620px); }
       .site-header { min-height: 76px; }
-      .hero { grid-template-columns: 1fr; gap: 38px; padding-block: 68px 76px; }
-      .hero-copy { max-width: 540px; }
-      h1 { max-width: 540px; font-size: clamp(58px, 12vw, 84px); }
-      .hero-image { min-height: 0; aspect-ratio: 1.25; }
-      .projects { padding-block: 20px 80px; }
+      .hero-image { height: 100svh; min-height: 520px; }
+      .projects { width: min(100% - 48px, 620px); padding-block: 44px 80px; }
       .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 18px; }
       .project-card, .project-card:nth-child(n) { grid-column: span 1; }
       .project-card:nth-child(1) { grid-column: span 2; }
@@ -192,49 +213,49 @@
       .wrap { width: calc(100% - 36px); }
       .wordmark-name { font-size: 12px; }
       .wordmark-caption { font-size: 8px; }
-      .nav-link { gap: 7px; font-size: 9px; }
-      .hero { gap: 32px; padding-block: 56px 62px; }
-      h1 { margin-block: 22px 18px; font-size: clamp(53px, 14vw, 68px); }
-      .hero-description { font-size: 15px; }
-      .hero-image { aspect-ratio: 1.05; }
+      .nav-link { gap: 7px; font-size: 11px; }
+      .site-header { padding-inline: 18px; }
+      .hero-image { height: 100svh; min-height: 480px; }
+      .projects { width: calc(100% - 36px); padding-top: 32px; }
       .project-grid { grid-template-columns: 1fr; gap: 28px; }
       .project-card, .project-card:nth-child(n) { grid-column: 1; }
       .project-card:nth-child(n) .project-image { aspect-ratio: 1.25; }
       .project-title { font-size: 22px; }
-      .site-footer { min-height: 70px; }
+      .site-footer { min-height: 70px; flex-wrap: wrap; padding-block: 18px; }
+      .footer-credit { align-items: flex-end; flex-direction: column; gap: 4px; }
     }
     @media (max-width: 340px) {
       .wordmark-name { font-size: 10px; letter-spacing: .1em; }
       .wordmark-caption { font-size: 7px; }
-      .nav-link { gap: 4px; font-size: 8px; letter-spacing: .08em; }
+      .nav-link { gap: 4px; font-size: 10px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
-  <header class="site-header wrap">
+  <header class="site-header">
     <a class="wordmark" href="index.html" aria-label="Patricia Nieto, inicio">
       <span class="wordmark-name">PATRICIA NIETO</span>
       <span class="wordmark-caption">Fotografía + vídeo</span>
     </a>
-    <nav aria-label="Navegación principal">
-      <a class="nav-link" href="#proyectos">Explorar proyectos <span class="nav-arrow" aria-hidden="true">↘</span></a>
+    <nav class="site-nav" aria-label="Navegación principal">
+      <a class="nav-link" href="#proyectos">Proyectos <span class="nav-arrow" aria-hidden="true">↘</span></a>
     </nav>
   </header>
 
   <main id="main">
-    <section class="hero wrap" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow">Fotografía · Dirección visual</p>
-        <h1 id="hero-title">Imágenes con <em>algo que contar.</em></h1>
-        <p class="hero-description">Fotografía y vídeo para marcas, espacios y momentos que merecen ser recordados.</p>
-        <a class="hero-cta" href="#proyectos">Descubre mi trabajo <span aria-hidden="true">↘</span></a>
-      </div>
+    <section class="hero" aria-label="Fotografía de portada">
       <div class="hero-image">
-        <img src="img/Tiffany_007.jpg" alt="Escaparate floral de Tiffany &amp; Co. fotografiado por Patricia Nieto" fetchpriority="high" />
+        <img src="img/Tiffany_063.jpg" alt="Composición floral de Tiffany &amp; Co. fotografiada por Patricia Nieto" fetchpriority="high" />
+        <h1 class="visually-hidden">Fotografía y vídeo de Patricia Nieto</h1>
       </div>
     </section>
 
@@ -243,35 +264,30 @@
         <a class="project-card" href="espacios.html">
           <div class="project-image">
             <img src="img/7P9A4410.jpg" alt="Luz y arquitectura en un espacio interior" loading="lazy" />
-            <span class="project-number">01 / 05</span>
           </div>
           <div class="project-details"><span class="project-title">Espacios</span><span class="project-arrow" aria-hidden="true">↗</span></div>
         </a>
         <a class="project-card" href="boda.html">
           <div class="project-image">
             <img src="img/7P9A3878.jpg" alt="Instante de una boda" loading="lazy" />
-            <span class="project-number">02 / 05</span>
           </div>
           <div class="project-details"><span class="project-title">Bodas</span><span class="project-arrow" aria-hidden="true">↗</span></div>
         </a>
         <a class="project-card" href="corporativo.html">
           <div class="project-image">
             <img src="img/BritChamber_PatriciaNieto_181.jpg" alt="Retrato durante un evento corporativo" loading="lazy" />
-            <span class="project-number">03 / 05</span>
           </div>
           <div class="project-details"><span class="project-title">Corporativo</span><span class="project-arrow" aria-hidden="true">↗</span></div>
         </a>
         <a class="project-card" href="producto.html">
           <div class="project-image">
-            <img src="img/Tiffany_063.jpg" alt="Fotografía de producto" loading="lazy" />
-            <span class="project-number">04 / 05</span>
+            <img src="img/IMG_3514.jpg" alt="Cóctel fotografiado para un proyecto de producto" loading="lazy" />
           </div>
           <div class="project-details"><span class="project-title">Producto</span><span class="project-arrow" aria-hidden="true">↗</span></div>
         </a>
         <a class="project-card" href="video.html">
           <div class="project-image">
             <img src="videos/posters/InPost_Atletico.jpg" alt="Fotograma de un proyecto de vídeo" loading="lazy" />
-            <span class="project-number">05 / 05</span>
           </div>
           <div class="project-details"><span class="project-title">Vídeo</span><span class="project-arrow" aria-hidden="true">↗</span></div>
         </a>
@@ -280,8 +296,20 @@
   </main>
 
   <footer class="site-footer wrap">
-    <span class="footer-name">Patricia Nieto</span>
-    <span class="footer-note">© <span id="year">2026</span> · Fotografía + vídeo</span>
+    <a class="footer-contact" href="mailto:patricianieto2.0@gmail.com">patricianieto2.0@gmail.com</a>
+    <div class="footer-credit">
+      <span class="footer-name">Patricia Nieto</span>
+      <span class="footer-note">© <span id="year">2026</span> · Fotografía + vídeo</span>
+    </div>
   </footer>
+  <script>
+    const siteHeader = document.querySelector('.site-header');
+    const updateHeaderAppearance = () => {
+      siteHeader.classList.toggle('is-scrolled', window.scrollY > 48);
+    };
+
+    updateHeaderAppearance();
+    window.addEventListener('scroll', updateHeaderAppearance, { passive: true });
+  </script>
 </body>
 </html>
